@@ -1,10 +1,11 @@
 import React from "react";
 import { CartItem } from "./index";
-import { useAppSelector } from "./Navbar";
+import { useAppSelector, useAppDispatch } from "../App";
+import { clearCart } from "../features/cart/cartSlice";
 
 const CartContainer = () => {
   const { cartItems, total, amount } = useAppSelector((state) => state.cart);
-  console.log(cartItems);
+  const dispatch = useAppDispatch();
 
   if (amount < 1) {
     return (
@@ -23,8 +24,6 @@ const CartContainer = () => {
       </header>
       <div>
         {cartItems.map((item) => {
-          console.log(item.id);
-          console.log(item);
           return <CartItem key={item.id} item={item} />;
         })}
       </div>
@@ -35,7 +34,9 @@ const CartContainer = () => {
             total <span>${total}</span>
           </h4>
         </div>
-        <button className="btn clear-btn">clear cart</button>
+        <button className="btn clear-btn" onClick={() => dispatch(clearCart())}>
+          clear cart
+        </button>
       </footer>
     </section>
   );
