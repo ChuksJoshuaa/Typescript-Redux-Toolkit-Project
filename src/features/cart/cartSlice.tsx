@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import cartItems from "../../CartItems"
 
 interface IProps {
         cartItems: any[],
@@ -8,8 +9,8 @@ interface IProps {
 } 
 
 const initialState: IProps = {
-    cartItems: [],
-    amount: 0,
+    cartItems: cartItems,
+    amount: 4,
     total: 0,
     isLoading: true
 }
