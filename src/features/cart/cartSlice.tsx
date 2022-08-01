@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import cartItems from "../../CartItems";
+import _ from "lodash";
 
 interface IProps {
   cartItems: any[];
@@ -20,14 +21,48 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     clearCart: (state) => {
-      state.cartItems = [];
+      // state.cartItems = [];
+
+      //using lodash to clear items in the cart
+      state.cartItems = _.filter(state.cartItems, function (o: any) {
+        return !o.id;
+      });
     },
     removeItem: (state, action) => {
-      console.log(action, "yes");
+      const itemId = action.payload;
+      // state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
+
+      //using lodash
+      state.cartItems = _.filter(state.cartItems, function (item: any) {
+        return item.id !== itemId;
+      });
+    },
+    increase: (state, action) => {
+      const itemId = action.payload;
+      // const cartItem = state.cartItems.find((item) => item.id === itemId);
+
+      //lodash
+      const cartItem = _.find(state.cartItems, function (item: any) {
+        return item.id === itemId;
+      });
+
+      cartItem.amount = cartItem.amount + 1;
+    },
+
+    decrease: (state, action) => {
+      const itemId = action.payload;
+      // const cartItem = state.cartItems.find((item) => item.id === itemId.id);
+
+      //lodash
+      const cartItem = _.find(state.cartItems, function (item: any) {
+        return item.id === itemId;
+      });
+
+      cartItem.amount = cartItem.amount - 1;
     },
   },
 });
 
-export const { clearCart, removeItem } = cartSlice.actions;
+export const { clearCart, removeItem, decrease, increase } = cartSlice.actions;
 
 export default cartSlice.reducer;

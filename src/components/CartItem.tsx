@@ -1,7 +1,7 @@
 import React from "react";
 import { ChevronDown, ChevronUp } from "../icons";
 import { useAppDispatch } from "../App";
-import { removeItem } from "../features/cart/cartSlice";
+import { removeItem, increase, decrease } from "../features/cart/cartSlice";
 
 interface IItem {
   item: {
@@ -14,24 +14,42 @@ interface IItem {
 }
 
 const CartItem: React.FC<IItem> = ({ item }) => {
+  //dispatch
   const dispatch = useAppDispatch();
+
   const { id, img, title, price, amount } = item;
+
+  const removeId: any = (): any => {
+    const { title, id } = item;
+    dispatch(removeItem(id));
+    alert(`Are you sure you want to remove ${title} from the bag`);
+  };
+
+  const decreaseId: any = (): any => {
+    const { amount } = item;
+    if (amount === 0) {
+      removeId();
+    } else {
+      dispatch(decrease(id));
+    }
+  };
+
   return (
     <article className="cart-item">
       <img src={img} alt={title} />
       <div>
         <h4>{title}</h4>
         <h4 className="item-price">${price}</h4>
-        <button className="remove-btn" onClick={() => dispatch(removeItem(id))}>
+        <button className="remove-btn" onClick={removeId}>
           remove
         </button>
       </div>
       <div>
-        <button className="amount-btn">
+        <button className="amount-btn" onClick={() => dispatch(increase(id))}>
           <ChevronUp />
         </button>
-        <p className="amount">{amount}</p>
-        <button className="amount-btn">
+        <p className="amount">{amount && amount < 1 ? 0 : amount}</p>
+        <button className="amount-btn" onClick={decreaseId}>
           <ChevronDown />
         </button>
       </div>
