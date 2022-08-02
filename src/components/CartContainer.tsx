@@ -1,11 +1,16 @@
 import React from "react";
 import { CartItem } from "./index";
-import { useAppSelector, useAppDispatch } from "../App";
-import { clearCart } from "../features/cart/cartSlice";
+import { useAppSelector } from "../App";
 
-const CartContainer = () => {
+
+interface IProps {
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const CartContainer: React.FC<IProps> = ({setShowModal}) => {
   const { cartItems, total, amount } = useAppSelector((state) => state.cart);
-  const dispatch = useAppDispatch();
+
+  
 
   if (amount < 1) {
     return (
@@ -34,7 +39,7 @@ const CartContainer = () => {
             total <span>${parseFloat(total.toFixed(2))}</span>
           </h4>
         </div>
-        <button className="btn clear-btn" onClick={() => dispatch(clearCart())}>
+        <button className="btn clear-btn" onClick={() => setShowModal(true)}>
           clear cart
         </button>
       </footer>
