@@ -23,12 +23,6 @@ const initialState: IProps = {
   isLoading: true,
 };
 
-interface IState {
-  pending: string | null;
-  fulfilled: string | null;
-  rejected: string | null;
-}
-
 export const getCartItems: any | any[] = createAsyncThunk(
   "cart/getCartItems",
   async () => {
