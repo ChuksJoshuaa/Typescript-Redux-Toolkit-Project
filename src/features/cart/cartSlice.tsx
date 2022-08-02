@@ -1,6 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import cartItems from "../../CartItems";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import cartItems from "../../CartItems";
 import _ from "lodash";
+
+const url = "https://course-api.com/react-useReducer-cart-project";
 
 interface IProps {
   cartItems: any[];
@@ -9,12 +11,32 @@ interface IProps {
   isLoading: boolean;
 }
 
+interface IAction {
+  payload: any;
+}
+
 const initialState: IProps = {
-  cartItems: cartItems,
+  // cartItems: cartItems,
+  cartItems: [],
   amount: 4,
   total: 0,
   isLoading: true,
 };
+
+interface IState {
+  pending: string | null;
+  fulfilled: string | null;
+  rejected: string | null;
+}
+
+export const getCartItems: any | any[] = createAsyncThunk(
+  "cart/getCartItems",
+  async () => {
+    return await fetch(url)
+      .then((resp) => resp.json())
+      .catch((err) => console.log(err));
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -65,16 +87,32 @@ const cartSlice = createSlice({
       let total = 0;
 
       state.cartItems.forEach((item) => {
-        amount += item.amount
-        total += item.amount * item.price 
-      })
+        amount += item.amount;
+        total += item.amount * item.price;
+      });
 
-      state.amount = amount
-      state.total = total
-    }
+      state.amount = amount;
+      state.total = total;
+    },
+  },
+
+  extraReducers: {
+    [getCartItems.pending]: (state: IProps) => {
+      state.isLoading = true;
+    },
+
+    [getCartItems.fulfilled]: (state: IProps, action: IAction) => {
+      state.isLoading = false;
+      state.cartItems = action.payload;
+    },
+
+    [getCartItems.rejected]: (state: IProps) => {
+      state.isLoading = false;
+    },
   },
 });
 
-export const { clearCart, removeItem, decrease, increase, calculateTotals } = cartSlice.actions;
+export const { clearCart, removeItem, decrease, increase, calculateTotals } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
