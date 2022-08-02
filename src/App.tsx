@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { Navbar } from "./components";
-import { CartContainer } from "./components";
+import React, { useEffect , useState} from "react";
+import { Navbar, CartContainer, Modal } from "./components";
 import { useSelector, useDispatch } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
@@ -15,14 +14,19 @@ function App() {
   const { cartItems } = useAppSelector((state) => state.cart)
   const dispatch = useAppDispatch()
 
+  const [showModal, setShowModal] = useState(false)
+
+
+
   useEffect(() => {
     dispatch(calculateTotals())
   }, [cartItems])
 
   return (
     <main>
+      {showModal && <Modal setShowModal={setShowModal} />}
       <Navbar />
-      <CartContainer />
+      <CartContainer setShowModal={setShowModal} />
     </main>
   );
 }

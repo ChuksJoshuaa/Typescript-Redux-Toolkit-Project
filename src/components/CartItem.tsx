@@ -19,13 +19,13 @@ const CartItem: React.FC<IItem> = ({ item }) => {
 
   const { id, img, title, price, amount } = item;
 
-  const removeId: any = (): any => {
+  const removeId = () => {
     const { title, id } = item;
     dispatch(removeItem(id));
     alert(`Are you sure you want to remove ${title} from the bag`);
   };
 
-  const decreaseId: any = (): any => {
+  const decreaseId = () => {
     const { amount } = item;
     if (amount === 1) {
       removeId();
