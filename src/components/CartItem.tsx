@@ -27,7 +27,7 @@ const CartItem: React.FC<IItem> = ({ item }) => {
 
   const decreaseId: any = (): any => {
     const { amount } = item;
-    if (amount === 0) {
+    if (amount === 1) {
       removeId();
     } else {
       dispatch(decrease(id));
@@ -48,7 +48,7 @@ const CartItem: React.FC<IItem> = ({ item }) => {
         <button className="amount-btn" onClick={() => dispatch(increase(id))}>
           <ChevronUp />
         </button>
-        <p className="amount">{amount && amount < 1 ? 0 : amount}</p>
+        <p className="amount">{amount}</p>
         <button className="amount-btn" onClick={decreaseId}>
           <ChevronDown />
         </button>
